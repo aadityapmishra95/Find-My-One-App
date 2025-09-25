@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+<link rel="manifest" href="/favicons/site.webmanifest">
+    <title>Report Submitted - FindMyOne</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Some specific styles for this page */
+        .thank-you-container {
+            text-align: center;
+        }
+        .thank-you-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .thank-you-container p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        .thank-you-container .actions a {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .actions .btn-report {
+            background-color: #5e2ab3;
+            color: white;
+        }
+        .actions .btn-search {
+            background-color: transparent;
+            color: #5e2ab3;
+            border: 1px solid #5e2ab3;
+        }
+        .actions .btn-report:hover, .actions .btn-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/dashboard.html" class="nav-logo">FindMyOne</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="/dashboard.html" class="nav-link">Report a Case</a></li>
+                <li class="nav-item"><a href="/search.html" class="nav-link">Search Cases</a></li>
+                <li class="nav-item"><a href="/profile.html" class="nav-link">My Information</a></li>
+                <li class="nav-item"><a href="/login.html" class="nav-link logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="content-container thank-you-container">
+            <h1>Thank You!</h1>
+            <p>Your missing person report has been successfully submitted.<br>We appreciate you taking the time to help our community.</p>
+            <div class="actions">
+                <a href="/dashboard.html" class="btn-report">Report Another Case</a>
+                <a href="/search.html" class="btn-search">Search Active Cases</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

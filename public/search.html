@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+<link rel="manifest" href="/favicons/site.webmanifest">
+    <title>Search Cases</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .search-form-container {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+        .search-form-container .form-group { width: 100%; margin-bottom: 0; }
+        .search-form-container input { background-color: white; }
+        .search-form-container button { width: auto; padding: 0.7rem 1.5rem; margin-top: 0; }
+
+        .case-list-container {
+            display: grid;
+            grid-template-columns: 1fr; /* 1 column by default */
+            gap: 1.5rem;
+        }
+        .case-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            overflow: hidden;
+        }
+        .case-card img {
+            width: 150px;
+            height: 100%;
+            object-fit: cover;
+        }
+        .case-info {
+            padding: 1rem 1.5rem;
+        }
+        .case-info h3 { margin-bottom: 0.5rem; color: #1d2b4a; }
+        .case-info p { margin: 0.25rem 0; color: #555; font-size: 0.9rem; }
+        .case-info strong { color: #333; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/dashboard.html" class="nav-logo">FindMyOne</a>
+            <ul class="nav-menu">
+    <li class="nav-item"><a href="/dashboard.html" class="nav-link">Report a Case</a></li>
+    <li class="nav-item"><a href="/search.html" class="nav-link active">Search Cases</a></li>
+    <li class="nav-item"><a href="/profile.html" class="nav-link">My Information</a></li>
+    <li class="nav-item"><a href="/help.html" class="nav-link">Help</a></li>
+    <li class="nav-item"><a href="/login.html" class="nav-link logout">Logout</a></li>
+</ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="content-container">
+            <h1>Search for a Missing Person</h1>
+            
+            <form id="search-form" class="search-form-container">
+                <div class="form-group">
+                    <label for="search-name">Name</label>
+                    <input type="text" id="search-name" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="search-age">Age</label>
+                    <input type="number" id="search-age" name="age">
+                </div>
+                <div class="form-group">
+                    <label for="search-location">Last Known Location</label>
+                    <input type="text" id="search-location" name="location">
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+
+            <div id="case-list-container" class="case-list-container">
+                <p>Loading active cases...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const caseListContainer = document.getElementById('case-list-container');
+        const searchForm = document.getElementById('search-form');
+
+        // Function to display cases in the list
+        const displayCases = (cases) => {
+            caseListContainer.innerHTML = ''; // Clear previous results
+
+            if (cases.length === 0) {
+                caseListContainer.innerHTML = '<p>No active cases found matching your criteria.</p>';
+                return;
+            }
+
+            cases.forEach(caseItem => {
+                const caseCard = `
+    <div class="case-card">
+        <div class="case-card-image">
+            <img src="${caseItem.photoPath || caseItem.imageURL}" alt="Photo of ${caseItem.fullName}">
+        </div>
+        <div class="case-info">
+            <span class="status-badge">${caseItem.status}</span>
+            <h3>${caseItem.fullName}</h3>
+            <p><strong>Age:</strong> ${caseItem.age}</p>
+            <p><strong>Last Seen:</strong> ${caseItem.lastSeenLocation}</p>
+            <a href="/case-details.html?id=${caseItem._id}" class="btn-details">More Details</a>
+        </div>
+    </div>
+`;
+                caseListContainer.innerHTML += caseCard;
+            });
+        };
+
+        // Function to fetch cases from the API
+        const fetchCases = async (queryParams = '') => {
+            try {
+                const response = await fetch(`/api/cases${queryParams}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const cases = await response.json();
+                displayCases(cases);
+            } catch (error) {
+                console.error('Failed to fetch cases:', error);
+                caseListContainer.innerHTML = '<p>Could not load cases. Please try again later.</p>';
+            }
+        };
+
+        // Event listener for the search form
+        searchForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = new FormData(searchForm);
+            const params = new URLSearchParams();
+
+            for (const [key, value] of formData.entries()) {
+                if (value) { // Only add non-empty fields to the query
+                    params.append(key, value);
+                }
+            }
+            
+            fetchCases(`?${params.toString()}`);
+        });
+
+        // Initial fetch when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchCases();
+        });
+    </script>
+</body>
+</html>

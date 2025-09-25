@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+<link rel="manifest" href="/favicons/site.webmanifest">
+    <title>SafeReturn - Reaching Out, Reuniting Lives</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific styles for the landing page */
+        body.landing {
+            background-color: #007bff; /* A nice blue background */
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+        }
+
+        .landing .navbar {
+            background-color: transparent; /* Transparent background for the nav on landing */
+            box-shadow: none;
+            padding: 1.5rem 2rem; /* More padding for a spaced-out look */
+        }
+
+        .landing .nav-logo {
+            font-size: 1.8rem; /* Larger logo */
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .landing .nav-menu .nav-item .nav-link {
+            color: #fff; /* White links */
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        .landing .nav-menu .nav-item .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Light hover effect */
+        }
+        
+        .hero-section {
+            text-align: center;
+            padding: 8rem 2rem 5rem; /* Generous padding */
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-section .heart-icon {
+            font-size: 4rem; /* Big heart icon */
+            color: #fff;
+            margin-bottom: 2rem;
+            display: inline-block;
+            line-height: 1; /* Aligns the icon correctly */
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem; /* Large, bold headline */
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem; /* Readable paragraph text */
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-section .btn-report {
+            background-color: #fff; /* White button */
+            color: #007bff; /* Blue text */
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex; /* Allows icon and text */
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+        }
+
+        .hero-section .btn-report:hover {
+            background-color: #e2e6ea; /* Slight hover effect */
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Basic mobile responsiveness */
+        @media (max-width: 768px) {
+            .landing .navbar {
+                padding: 1rem;
+            }
+            .landing .nav-logo {
+                font-size: 1.5rem;
+            }
+            .landing .nav-menu {
+                display: none; /* Hide nav menu on small screens for simplicity for now */
+            }
+            .hero-section {
+                padding: 6rem 1rem 3rem;
+            }
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+            .hero-section p {
+                font-size: 1rem;
+            }
+            .hero-section .btn-report {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="landing">
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">SafeReturn</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="/login.html" class="nav-link">Login</a></li>
+                <li class="nav-item"><a href="/signup.html" class="nav-link">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <span class="heart-icon">❤️</span> <h1>Reuniting Families, One Search at a Time</h1>
+        <p>SafeReturn helps communities come together to find missing persons and reunite them with their loved ones. Our platform provides a centralized hub for reporting, searching, and sharing critical information securely and efficiently.</p>
+        <a href="/dashboard.html" class="btn-report">+ Report Missing Person</a>
+    </div>
+
+</body>
+</html>

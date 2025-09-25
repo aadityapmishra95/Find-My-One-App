@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+<link rel="manifest" href="/favicons/site.webmanifest">
+    <title>Help & Contact - FindMyOne</title>
+    <link rel="stylesheet" href="style.css">
+<style>
+    .help-section {
+        margin-bottom: 2rem;
+        line-height: 1.7;
+    }
+    .help-section h2 {
+        font-size: 1.5rem;
+        color: #1d2b4a;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #ddd;
+    }
+    .help-section p {
+        color: #555;
+        font-size: 1rem;
+    }
+    .help-section strong {
+        color: #333;
+    }
+    
+    /* === THIS IS THE NEW AND IMPROVED CODE FOR LINKS === */
+    .help-section a {
+        color: #5e2ab3; /* A strong, readable purple for the link */
+        text-decoration: none; /* No underline by default */
+        font-weight: 500;
+        transition: all 0.2s ease-in-out; /* This makes the hover effect smooth */
+        border-radius: 3px; /* Helps with focus styles */
+    }
+
+    .help-section a:hover {
+        color: #3d1b75; /* A slightly darker, richer purple for the hover effect */
+        text-decoration: none; /* IMPORTANT: Keeps the underline off during hover */
+    }
+
+    .help-section a:focus {
+        outline: 2px solid #c7a9ff; /* Adds a nice outline for keyboard navigation */
+    }
+</style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/dashboard.html" class="nav-logo">FindMyOne</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="/dashboard.html" class="nav-link">Report a Case</a></li>
+                <li class="nav-item"><a href="/search.html" class="nav-link">Search Cases</a></li>
+                <li class="nav-item"><a href="/profile.html" class="nav-link">My Information</a></li>
+                <li class="nav-item"><a href="/help.html" class="nav-link active">Help</a></li>
+                <li class="nav-item"><a href="/login.html" class="nav-link logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="content-container">
+            <h1>Help & Contact Information</h1>
+            
+           <div class="help-section">
+    <h2>Contacting the Admin Panel</h2>
+    <p>If you have a technical issue, a question about a case, or need to get in touch with our administrative team for any reason, please use the contact details below. We aim to respond within 24-48 business hours.</p>
+    
+    <p><strong>Admin Email:</strong> <a href=mailto:"findmy1one1@gmail.com">findmy1one1@gmail.com</a></p>
+    <p><strong>Contact Number:</strong> +91 79728 78718 (Mon-Fri, 10 AM - 6 PM IST)</p>
+    <p><strong>Location:</strong> Mumbai, Maharashtra, India</p>
+</div>
+
+            <div class="help-section">
+                <h2>Frequently Asked Questions (FAQ)</h2>
+                <p><strong>How do I update a case I submitted?</strong><br>
+                Currently, case updates must be handled by an administrator to ensure data integrity. Please email us at the address above with the full name of the missing person and the updated information.</p>
+                <p><strong>Is my personal information safe?</strong><br>
+                Yes, your account information is kept private. The reporter's name and contact number you provide in the report form are only visible to the administrative team for verification purposes.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

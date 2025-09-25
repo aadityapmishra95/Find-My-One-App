@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+<link rel="manifest" href="/favicons/site.webmanifest">
+    <title>Case Details - FindMyOne</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .details-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* Photo on left, details on right */
+            gap: 2.5rem;
+            align-items: flex-start;
+        }
+        .details-photo img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .details-info h1 {
+            font-size: 2.5rem;
+            margin-top: 0;
+            color: #1d2b4a;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        .info-item strong {
+            display: block;
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        .info-item span {
+            font-size: 1.1rem;
+            color: #333;
+        }
+        .description-section {
+            grid-column: 1 / -1; /* Make description span both columns */
+        }
+        @media (max-width: 768px) {
+            .details-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container"></div>
+    </nav>
+
+    <div class="main-content">
+        <div id="details-container" class="content-container">
+            <p>Loading case details...</p>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const detailsContainer = document.getElementById('details-container');
+        const params = new URLSearchParams(window.location.search);
+        const caseId = params.get('id');
+
+        if (!caseId) {
+            detailsContainer.innerHTML = '<h1>Error: No case ID provided.</h1>';
+            return;
+        }
+
+        try {
+            // Fetch BOTH the case data AND the current user's data at the same time
+            const [caseResponse, userResponse] = await Promise.all([
+                fetch(`/api/cases/${caseId}`),
+                fetch('/api/user/me') // We need the user's ID to check for ownership
+            ]);
+
+            if (!caseResponse.ok) throw new Error('Case not found.');
+            
+            const caseData = await caseResponse.json();
+            // userResponse might not be ok if user is not logged in, which is fine
+            const userData = userResponse.ok ? await userResponse.json() : null;
+
+            // --- Display the Case Details (same as before) ---
+            const formattedDate = caseData.lastSeenDate ? new Date(caseData.lastSeenDate).toLocaleDateString('en-GB', {
+                day: 'numeric', month: 'long', year: 'numeric'
+            }) : 'N/A';
+
+            detailsContainer.innerHTML = `
+                <div class="details-layout">
+                    <div class="details-photo">
+                        <img src="${caseData.photoPath || caseData.imageURL}" alt="Photo of ${caseData.fullName}">
+                    </div>
+                    <div class="details-info">
+                        <h1>${caseData.fullName}</h1>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Age</strong><span>${caseData.age}</span></div>
+                            <div class="info-item"><strong>Gender</strong><span>${caseData.gender || 'N/A'}</span></div>
+                            <div class="info-item"><strong>Last Seen Location</strong><span>${caseData.lastSeenLocation}</span></div>
+                            <div class="info-item"><strong>Last Seen Date</strong><span>${formattedDate}</span></div>
+                            <div class="info-item description-section"><strong>Description</strong><span>${caseData.description}</span></div>
+                            <div class="info-item"><strong>Reporter Name</strong><span>${caseData.reporterName}</span></div>
+                            <div class="info-item"><strong>Reporter Contact</strong><span><a href="mailto:${caseData.reporterContact}">${caseData.reporterContact}</a></span></div>
+                            <div class="info-item"><strong>Reporter Phone</strong><span>${caseData.reporterPhone || 'Not Provided'}</span></div>
+                            <div class="info-item"><strong>Status</strong><span id="case-status-display">${caseData.status}</span></div>
+                        </div>
+                        <div id="action-buttons-container" style="margin-top: 2rem; text-align: right;"></div>
+                    </div>
+                </div>
+            `;
+
+            // --- NEW LOGIC: Conditionally show and operate the "Mark as Found" button ---
+            const actionButtonsContainer = document.getElementById('action-buttons-container');
+            
+            // The button only appears if the case is 'Active' AND the current user is the original reporter
+            if (caseData.status === 'Active' && userData && caseData.reportedBy === userData.id) {
+                const foundButton = document.createElement('button');
+                foundButton.textContent = 'Mark as Found';
+                foundButton.className = 'btn btn-primary';
+                
+                actionButtonsContainer.appendChild(foundButton);
+
+                // Add a click listener to the new button
+                foundButton.addEventListener('click', async () => {
+                    foundButton.textContent = 'Updating...';
+                    foundButton.disabled = true;
+
+                    const updateResponse = await fetch(`/api/cases/${caseId}/status`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: 'Found' })
+                    });
+
+                    if (updateResponse.ok) {
+                        document.getElementById('case-status-display').textContent = 'Found';
+                        foundButton.style.display = 'none'; // Hide button after success
+                        alert('Case status has been updated to "Found".');
+                    } else {
+                        alert('Failed to update status. Please try again.');
+                        foundButton.textContent = 'Mark as Found';
+                        foundButton.disabled = false;
+                    }
+                });
+            }
+        } catch (error) {
+            detailsContainer.innerHTML = `<h1>Error: ${error.message}</h1><p>Please check the URL and try again.</p>`;
+        }
+    });
+</script>
+</body>
+</html>
