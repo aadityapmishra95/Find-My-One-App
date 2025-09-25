@@ -51,5 +51,5 @@ app.get('/', (req, res) => {
 
 // ... rest of your server.js code ...
 
-const PORT = 3000; // The port our server will run on
-app.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));
+// Export the app for Vercel
+module.exports = app;
