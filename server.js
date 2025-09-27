@@ -15,12 +15,10 @@ const path = require('path');
 const MongoStore = require('connect-mongo');
 // ✅ FILE: index.js (or server.js) - The Main File
 
-import express from 'express';
-import setupRoutes from './routes.js'; // Import the function
+import express from 'express'; // <-- KEEP ONLY ONE
+import setupRoutes from './routes.js';
 
 const app = express();
-
-// Pass the app instance into your route setup function
 setupRoutes(app);
 
 app.listen(3000, () => {
