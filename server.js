@@ -1,16 +1,14 @@
-// 1. IMPORT PACKAGES
+// 1. IMPORT PACKAGES (ES Module Syntax)
 // ==============================================
-// Only load .env variables in development
-if (process.env.NODE_ENV === 'development') {
-  require('dotenv').config();
-}
+// Load .env variables
+import 'dotenv/config';
 
-const express = require('express');
-const mongoose = require('mongoose');
-const session = require('express-session');
-const passport = require('passport');
-const path = require('path');
-const MongoStore = require('connect-mongo');
+import express from 'express';
+import mongoose from 'mongoose';
+import session from 'express-session';
+import passport from 'passport';
+import path from 'path';
+import MongoStore from 'connect-mongo';
 
 // 2. INITIALIZE APP & MIDDLEWARE
 // ==============================================
@@ -22,7 +20,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session Middleware - required for Passport
-// IMPORTANT: Use the MongoStore option here to persist sessions in your database
 app.use(session({
     secret: process.env.SESSION_SECRET, // Make sure this is in your Vercel env variables
     resave: false,
@@ -38,31 +35,25 @@ app.use(passport.session());
 
 // 3. DEFINE ROUTES
 // ==============================================
-// A simple homepage route to test if the server is working
 app.get('/', (req, res) => {
     res.send('Welcome to the Find My One API! Server is running.');
 });
 
 // TODO: You will add your other application routes here
-// Example:
-// const userRoutes = require('./routes/userRoutes');
-// app.use('/api/users', userRoutes);
 
 // 4. CONNECT TO DATABASE & START SERVER
 // ==============================================
-// Get the MongoDB connection string from the .env file or use a default
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/lostandfound';
 
 mongoose.connect(MONGO_URI)
     .then(() => {
         console.log('MongoDB Connected Successfully!');
         
-        // Start the Express server ONLY after the database connection is successful
         app.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);
         });
     })
     .catch(err => {
         console.error('Failed to connect to MongoDB', err);
-        process.exit(1); // Exit the process with an error code
+        process.exit(1);
     });
