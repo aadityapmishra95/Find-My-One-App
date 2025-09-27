@@ -1,11 +1,9 @@
 // 1. IMPORT PACKAGES
 // ==============================================
-// Must be at the very top to ensure environment variables are available globally
 // Only load .env variables in development
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config();
 }
-
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -13,46 +11,30 @@ const session = require('express-session');
 const passport = require('passport');
 const path = require('path');
 const MongoStore = require('connect-mongo');
-// ✅ FILE: index.js (or server.js) - The Main File
 
-import express from 'express'; // <-- KEEP ONLY ONE
-import setupRoutes from './routes.js';
-
+// 2. INITIALIZE APP & MIDDLEWARE
+// ==============================================
 const app = express();
-setupRoutes(app);
+const PORT = process.env.PORT || 3000;
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
+// Middlewares to parse request bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Session Middleware - required for Passport
+// IMPORTANT: Use the MongoStore option here to persist sessions in your database
 app.use(session({
     secret: process.env.SESSION_SECRET, // Make sure this is in your Vercel env variables
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI // Your existing MongoDB connection string
+        mongoUrl: process.env.MONGO_URI // Your MongoDB connection string
     })
-}));
-
-
-// 2. INITIALIZE APP & MIDDLEWARE
-// ==============================================
-const PORT = process.env.PORT || 3000; // Use port from .env file, or default to 3000
-
-// Middlewares to parse request bodies
-app.use(express.json()); // for parsing application/json
-app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
-// Session Middleware - required for Passport
-app.use(session({
-    secret: process.env.SESSION_SECRET, // A random secret key stored in your .env file
-    resave: false,
-    saveUninitialized: false
 }));
 
 // Passport Middleware
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 // 3. DEFINE ROUTES
 // ==============================================
@@ -66,13 +48,12 @@ app.get('/', (req, res) => {
 // const userRoutes = require('./routes/userRoutes');
 // app.use('/api/users', userRoutes);
 
-
 // 4. CONNECT TO DATABASE & START SERVER
 // ==============================================
-// Get the MongoDB connection string from the .env file
+// Get the MongoDB connection string from the .env file or use a default
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/lostandfound';
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(MONGO_URI)
     .then(() => {
         console.log('MongoDB Connected Successfully!');
         
