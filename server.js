@@ -13,7 +13,19 @@ const session = require('express-session');
 const passport = require('passport');
 const path = require('path');
 const MongoStore = require('connect-mongo');
+// ✅ FILE: index.js (or server.js) - The Main File
 
+import express from 'express';
+import setupRoutes from './routes.js'; // Import the function
+
+const app = express();
+
+// Pass the app instance into your route setup function
+setupRoutes(app);
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
 app.use(session({
     secret: process.env.SESSION_SECRET, // Make sure this is in your Vercel env variables
     resave: false,
@@ -26,7 +38,6 @@ app.use(session({
 
 // 2. INITIALIZE APP & MIDDLEWARE
 // ==============================================
-const app = express();
 const PORT = process.env.PORT || 3000; // Use port from .env file, or default to 3000
 
 // Middlewares to parse request bodies

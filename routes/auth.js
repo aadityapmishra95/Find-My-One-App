@@ -109,4 +109,22 @@ router.post('/reset-password', (req, res) => {
         res.status(500).send('An error occurred while resetting the password.');
     });
 });
+// ✅ FILE: routes.js - The Routes File
+
+import { Router } from 'express';
+
+
+router.get('/', (req, res) => {
+  res.send('Welcome to the homepage!');
+});
+
+// Maybe you have other routers
+import anotherRouter from './anotherRoute.js';
+router.use('/api', anotherRouter);
+
+
+// Export a function that takes 'app' as an argument
+export default function setupRoutes(app) {
+  app.use('/', router);
+}
 module.exports = router;
