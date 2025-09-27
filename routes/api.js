@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const Case = require('../models/Case');
+const Case = require('../models/case');
 const User = require('../models/User');
 
 // --- Set Up Multer for File Storage ---
