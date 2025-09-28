@@ -133,10 +133,6 @@ router.get('/', (req, res) => {
   res.send('Welcome to the homepage!');
 });
 
-// Maybe you have other routers
-import anotherRouter from './anotherRoute.js';
-router.use('/api', anotherRouter);
-
 
 // Export a function that takes 'app' as an argument
 export default function setupRoutes(app) {
