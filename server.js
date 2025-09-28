@@ -10,8 +10,8 @@ import MongoStore from 'connect-mongo';
 import cors from 'cors'; // For handling cross-origin requests from a front-end
 
 // --- Import your route files here ---
-// import authRoutes from './routes/auth.js';
-// import itemRoutes from './routes/items.js';
+import authRoutes from './routes/auth.js';
+import itemRoutes from './routes/api.js';
 
 
 // 2. INITIALIZE APP & CONSTANTS
@@ -53,8 +53,8 @@ app.get('/', (req, res) => {
 });
 
 // --- Use your imported route files here ---
-// app.use('/api/auth', authRoutes);
-// app.use('/api/items', itemRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/items', itemRoutes);
 
 
 // 5. DATABASE CONNECTION & SERVER START
