@@ -12,7 +12,29 @@ import MongoStore from 'connect-mongo';
 
 // 2. INITIALIZE APP & MIDDLEWARE
 // ==============================================
+const express = require('express');
 const app = express();
+// Sample data to act as a database
+const users = [
+  { id: 1, name: 'Alice', connection: 'Friend' },
+  { id: 2, name: 'Bob', connection: 'Colleague' },
+  { id: 3, name: 'Charlie', connection: 'Family' }
+];
+// This is your existing root route
+app.get('/', (req, res) => {
+  res.send('Welcome to the Find My One API! Server is running.');
+});
+
+// ---- NEW: ADD THE API ENDPOINT ----
+app.get('/api/users', (req, res) => {
+  // This sends the 'users' array back as a JSON response
+  res.json(users);
+});
+// ---------------------------------
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 const PORT = process.env.PORT || 3000;
 
 // Middlewares to parse request bodies
