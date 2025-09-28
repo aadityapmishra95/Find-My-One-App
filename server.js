@@ -1,92 +1,74 @@
-// 1. IMPORT PACKAGES (ES Module Syntax)
+// 1. IMPORT PACKAGES
 // ==============================================
-// Load .env variables
-import 'dotenv/config';
-
+// Using ES Module syntax for all imports
+import 'dotenv/config'; // Loads environment variables from .env file
 import express from 'express';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import passport from 'passport';
-import path from 'path';
 import MongoStore from 'connect-mongo';
+import cors from 'cors'; // For handling cross-origin requests from a front-end
 
-// CORRECT ✅
-import express from 'express';
-// ... other imports
+// --- Import your route files here ---
+// import authRoutes from './routes/auth.js';
+// import itemRoutes from './routes/items.js';
 
-const app = express();
-const PORT = process.env.PORT || 3000; // <-- DECLARE PORT EARLY
 
-// ... other middleware and code ...
-
-// Now, it's safe to use PORT here
-app.listen(PORT, () => {
-    console.log(`Server is running on port: ${PORT}`);
-});
-
-// 2. INITIALIZE APP & MIDDLEWARE
+// 2. INITIALIZE APP & CONSTANTS
 // ==============================================
-// Sample data to act as a database
-const users = [
-  { id: 1, name: 'Alice', connection: 'Friend' },
-  { id: 2, name: 'Bob', connection: 'Colleague' },
-  { id: 3, name: 'Charlie', connection: 'Family' }
-];
-// This is your existing root route
-app.get('/', (req, res) => {
-  res.send('Welcome to the Find My One API! Server is running.');
-});
+const app = express();
+const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_URI;
 
-// ---- NEW: ADD THE API ENDPOINT ----
-app.get('/api/users', (req, res) => {
-  // This sends the 'users' array back as a JSON response
-  res.json(users);
-});
-// ---------------------------------
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// 3. MIDDLEWARE SETUP
+// ==============================================
+// Enable CORS for all routes, allowing your front-end to connect
+app.use(cors()); 
 
-// Middlewares to parse request bodies
+// Middleware to parse incoming JSON and URL-encoded request bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session Middleware - required for Passport
+// Session Middleware - configured to store sessions in MongoDB
 app.use(session({
-    secret: process.env.SESSION_SECRET, // Make sure this is in your Vercel env variables
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI // Your MongoDB connection string
+        mongoUrl: MONGO_URI
     })
 }));
 
-// Passport Middleware
+// Passport Middleware for authentication
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 3. DEFINE ROUTES
+
+// 4. API ROUTES
 // ==============================================
+// A simple test route to confirm the server is running
 app.get('/', (req, res) => {
     res.send('Welcome to the Find My One API! Server is running.');
 });
 
-// TODO: You will add your other application routes here
+// --- Use your imported route files here ---
+// app.use('/api/auth', authRoutes);
+// app.use('/api/items', itemRoutes);
 
-// 4. CONNECT TO DATABASE & START SERVER
+
+// 5. DATABASE CONNECTION & SERVER START
 // ==============================================
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/lostandfound';
-
 mongoose.connect(MONGO_URI)
     .then(() => {
         console.log('MongoDB Connected Successfully!');
         
+        // Start the Express server ONLY after the database connection is successful
         app.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);
         });
     })
     .catch(err => {
         console.error('Failed to connect to MongoDB', err);
-        process.exit(1);
+        process.exit(1); // Exit the process with an error code
     });

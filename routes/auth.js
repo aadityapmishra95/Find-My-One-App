@@ -111,7 +111,22 @@ router.post('/reset-password', (req, res) => {
 });
 // ✅ FILE: routes.js - The Routes File
 
+
 import { Router } from 'express';
+
+
+// Define a test route for items
+router.get('/', (req, res) => {
+    res.send('This is the route for getting all items.');
+});
+
+// Define a route for creating a new item
+router.post('/', (req, res) => {
+    // Logic to create a new item in the database will go here
+    res.send('A new item has been created.');
+});
+
+
 
 
 router.get('/', (req, res) => {
