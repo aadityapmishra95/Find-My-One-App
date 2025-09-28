@@ -10,9 +10,22 @@ import passport from 'passport';
 import path from 'path';
 import MongoStore from 'connect-mongo';
 
+// CORRECT ✅
+import express from 'express';
+// ... other imports
+
+const app = express();
+const PORT = process.env.PORT || 3000; // <-- DECLARE PORT EARLY
+
+// ... other middleware and code ...
+
+// Now, it's safe to use PORT here
+app.listen(PORT, () => {
+    console.log(`Server is running on port: ${PORT}`);
+});
+
 // 2. INITIALIZE APP & MIDDLEWARE
 // ==============================================
-const app = express();
 // Sample data to act as a database
 const users = [
   { id: 1, name: 'Alice', connection: 'Friend' },
@@ -34,7 +47,6 @@ app.get('/api/users', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-const PORT = process.env.PORT || 3000;
 
 // Middlewares to parse request bodies
 app.use(express.json());
