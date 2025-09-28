@@ -135,7 +135,7 @@ router.get('/', (req, res) => {
 
 
 // Export a function that takes 'app' as an argument
-export default function setupRoutes(app) {
+default function setupRoutes(app) {
   app.use('/', router);
 }
 module.exports = router;

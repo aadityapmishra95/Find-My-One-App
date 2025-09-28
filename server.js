@@ -11,7 +11,8 @@ import cors from 'cors'; // For handling cross-origin requests from a front-end
 
 // --- Import your route files here ---
 import authRoutes from './routes/auth.js';
-import itemRoutes from './routes/api.js';
+// In server.js - CORRECT for a named export
+import { itemRoutes } from './routes/api.js';
 
 
 // 2. INITIALIZE APP & CONSTANTS
