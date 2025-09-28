@@ -12,7 +12,6 @@ import MongoStore from 'connect-mongo';
 
 // 2. INITIALIZE APP & MIDDLEWARE
 // ==============================================
-const express = require('express');
 const app = express();
 // Sample data to act as a database
 const users = [
